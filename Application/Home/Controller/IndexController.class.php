@@ -1,7 +1,7 @@
 <?php
 namespace Home\Controller;
 use Think\Controller;
-Vendor('Wx.Wx');
+Vendor('Wx.Wx', dirname(__FILE__)."/../");
 
 class IndexController extends Controller {
 
