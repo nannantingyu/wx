@@ -283,7 +283,7 @@ class WechatCallbackApi
                 $result = $this->transmitMusic($object, $content);
             }
         }else{
-            $result = $this->transmitText($object, $content);
+            $result = $this->response->transmitText($object, $content);
         }
         return $result;
     }
