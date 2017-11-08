@@ -190,7 +190,7 @@ class WechatCallbackApi
             $content[] = array("Title"=>"水稻育种家田永太:好稻种就是农民所有念想的希望!", "Description"=>"水稻育种家田永太:好稻种就是农民所有念想的希望!", "PicUrl"=>"http://image.yjshare.cn/images/5.jpg", "Url" =>"http://www.yjshare.cn/blog_10496");
             $content[] = array("Title"=>"男人为什么离不开酒?写的太好了,句句入骨!", "Description"=>"男人为什么离不开酒?写的太好了,句句入骨!", "PicUrl"=>"http://image.yjshare.cn/images/6.jpg", "Url" =>"http://www.yjshare.cn/blog_1897");
         }else if (strstr($keyword, "音乐")){
-            $content = array("Title"=>"惠化洞", "Description"=>"请回答1988", "MusicUrl"=>"http://image.yjshare.cn/images/%E7%BB%B5%E7%BE%8A.mp3", "HQMusicUrl"=>"http://image.yjshare.cn/images/%E6%83%A0%E5%8C%96%E6%B4%9E.mp3");
+            $content = array("Title"=>"惠化洞", "Description"=>"请回答1988", "MusicUrl"=>"http://image.yjshare.cn/images/%E4%BA%8C%E5%8D%81%E5%B2%81%E7%9A%84%E6%9F%90%E4%B8%80%E5%A4%A9.mp3", "HQMusicUrl"=>"http://image.yjshare.cn/images/%E6%83%A0%E5%8C%96%E6%B4%9E.mp3");
         }else{
             $content = date("Y-m-d H:i:s",time())."\nOpenID：".$object->FromUserName."\n Captain_tu";
         }
