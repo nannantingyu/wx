@@ -1,7 +1,7 @@
 <?php
 
 header('Content-type:text');
-define("TOKEN", "weixin");
+define("TOKEN", "NANNANTINGYU");
 
 class WechatCallbackApi
 {
