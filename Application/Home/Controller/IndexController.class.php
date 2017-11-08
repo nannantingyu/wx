@@ -13,4 +13,9 @@ class IndexController extends Controller {
             $wechatObj->responseMsg();
         }
     }
+
+    public function menu() {
+        $wechatObj = new \WechatCallbackApi();
+        $wechatObj->getMenu();
+    }
 }
