@@ -2,14 +2,8 @@
 
 header('Content-type:text');
 define("TOKEN", "weixin");
-$wechatObj = new wechatCallbackapiTest();
-if (isset($_GET['echostr'])) {
-    $wechatObj->valid();
-}else{
-    $wechatObj->responseMsg();
-}
 
-class wechatCallbackapiTest
+class WechatCallbackApi
 {
     public function valid()
     {
