@@ -3,8 +3,15 @@ use Think\Log;
 header('Content-type:text');
 define("TOKEN", "NANNANTINGYU");
 
+require_once "Response.php";
+
 class WechatCallbackApi
 {
+    private $response;
+    public function __construct() {
+        $this->response = new WxResponse();
+    }
+
     public function valid()
     {
         $echoStr = $_GET["echostr"];
@@ -87,7 +94,6 @@ class WechatCallbackApi
         ]);
 
         $access_token = $this->getAccessToken();
-        var_dump($access_token);
         $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
         $result = $this->https_request($url, json_encode($jsonmenu, JSON_UNESCAPED_UNICODE));
 
@@ -109,10 +115,107 @@ class WechatCallbackApi
         return $output;
     }
 
-    //接收事件消息
+    public function responseMsg()
+    {
+        $postStr = file_get_contents("php://input");
+        if (!empty($postStr)){
+            $this->logger("R \r\n".$postStr);
+            $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $RX_TYPE = trim($postObj->MsgType);
+
+            //消息类型分离
+            switch ($RX_TYPE)
+            {
+                case "event":
+                    $result = $this->receiveEvent($postObj);
+                    break;
+                case "text":
+                    if (strstr($postObj->Content, "第三方")){
+                        $result = $this->relayPart3("http://www.fangbei.org/test.php".'?'.$_SERVER['QUERY_STRING'], $postStr);
+                    }else{
+                        $result = $this->receiveText($postObj);
+                    }
+                    break;
+                case "image":
+                    $result = $this->response->receiveImage($postObj);
+                    break;
+                case "location":
+                    $result = $this->response->receiveLocation($postObj);
+                    break;
+                case "voice":
+                    $result = $this->response->receiveVoice($postObj);
+                    break;
+                case "video":
+                    $result = $this->response->receiveVideo($postObj);
+                    break;
+                case "link":
+                    $result = $this->response->receiveLink($postObj);
+                    break;
+                default:
+                    $result = "";
+                    break;
+            }
+
+            echo $result;
+        }else {
+            echo "";
+            exit;
+        }
+    }
+
+    /**
+     * 接收文本
+     * @param $object
+     * @return string
+     */
+    public function receiveText($object)
+    {
+        $keyword = trim($object->Content);
+        //多客服人工回复模式
+        if (strstr($keyword, "请问在吗") || strstr($keyword, "在线客服")){
+            $result = $this->response->transmitService($object);
+            return $result;
+        }
+
+        //自动回复模式
+        if (strstr($keyword, "文本")){
+            $content = "这是个文本消息";
+        }else if (strstr($keyword, "表情")){
+            $content = "中国：".$this->response->bytes_to_emoji(0x1F1E8).$this->response->bytes_to_emoji(0x1F1F3)."\n仙人掌：".$this->response->bytes_to_emoji(0x1F335);
+        }else if (strstr($keyword, "单图文")){
+            $content = array();
+            $content[] = array("Title"=>"单图文标题",  "Description"=>"单图文内容", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
+        }else if (strstr($keyword, "图文") || strstr($keyword, "多图文")){
+            $content = array();
+            $content[] = array("Title"=>"多图文1标题", "Description"=>"", "PicUrl"=>"http://image.yjshare.cn/images/4.jpg", "Url" =>"http://www.yjshare.cn/blog_21814");
+            $content[] = array("Title"=>"多图文2标题", "Description"=>"", "PicUrl"=>"http://image.yjshare.cn/images/5.jpg", "Url" =>"http://www.yjshare.cn/blog_21815");
+            $content[] = array("Title"=>"多图文3标题", "Description"=>"", "PicUrl"=>"http://image.yjshare.cn/images/6.jpg", "Url" =>"http://www.yjshare.cn/blog_21810");
+        }else if (strstr($keyword, "音乐")){
+            $content = array("Title"=>"惠化洞", "Description"=>"请回答1988", "MusicUrl"=>"http://image.yjshare.cn/images/%E7%BB%B5%E7%BE%8A.mp3", "HQMusicUrl"=>"http://image.yjshare.cn/images/%E6%83%A0%E5%8C%96%E6%B4%9E.mp3");
+        }else{
+            $content = date("Y-m-d H:i:s",time())."\nOpenID：".$object->FromUserName."\n Captain_tu";
+        }
+
+        if(is_array($content)){
+            if (isset($content[0])){
+                $result = $this->response->transmitNews($object, $content);
+            }else if (isset($content['MusicUrl'])){
+                $result = $this->response->transmitMusic($object, $content);
+            }
+        }else{
+            $result = $this->response->transmitText($object, $content);
+        }
+
+        return $result;
+    }
+
+    /**
+     * 接收事件
+     * @param $object
+     * @return string
+     */
     private function receiveEvent($object)
     {
-        $content = "";
         switch ($object->Event)
         {
             case "subscribe":
@@ -127,7 +230,7 @@ class WechatCallbackApi
                 {
                     case "Python":
                         $content = array();
-                        $content[] = array("Title"=>"Python入门到放弃", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
+                        $content[] = array("Title"=>"Python入门到放弃", "Description"=>"", "PicUrl"=>"http://image.yjshare.cn/images/2.jpg", "Url" =>"http://www.yjshare.cn/blog_21807");
                         break;
                     default:
                         $content = "点击菜单：".$object->EventKey;
@@ -184,101 +287,5 @@ class WechatCallbackApi
             $result = $this->transmitText($object, $content);
         }
         return $result;
-    }
-
-    private function receiveText($object)
-    {
-        $keyword = trim($object->Content);
-        //多客服人工回复模式
-        if (strstr($keyword, "请问在吗") || strstr($keyword, "在线客服")){
-            $result = $this->transmitService($object);
-            return $result;
-        }
-
-        //自动回复模式
-        if (strstr($keyword, "文本")){
-            $content = "这是个文本消息";
-        }else if (strstr($keyword, "表情")){
-            $content = "中国：".$this->bytes_to_emoji(0x1F1E8).$this->bytes_to_emoji(0x1F1F3)."\n仙人掌：".$this->bytes_to_emoji(0x1F335);
-        }else if (strstr($keyword, "单图文")){
-            $content = array();
-            $content[] = array("Title"=>"单图文标题",  "Description"=>"单图文内容", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
-        }else if (strstr($keyword, "图文") || strstr($keyword, "多图文")){
-            $content = array();
-            $content[] = array("Title"=>"多图文1标题", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
-            $content[] = array("Title"=>"多图文2标题", "Description"=>"", "PicUrl"=>"http://d.hiphotos.bdimg.com/wisegame/pic/item/f3529822720e0cf3ac9f1ada0846f21fbe09aaa3.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
-            $content[] = array("Title"=>"多图文3标题", "Description"=>"", "PicUrl"=>"http://g.hiphotos.bdimg.com/wisegame/pic/item/18cb0a46f21fbe090d338acc6a600c338644adfd.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
-        }else if (strstr($keyword, "音乐")){
-            $content = array("Title"=>"最炫民族风", "Description"=>"歌手：凤凰传奇", "MusicUrl"=>"http://121.199.4.61/music/zxmzf.mp3", "HQMusicUrl"=>"http://121.199.4.61/music/zxmzf.mp3");
-        }else{
-            $content = date("Y-m-d H:i:s",time())."\nOpenID：".$object->FromUserName."\n技术支持 方倍工作室";
-        }
-
-        if(is_array($content)){
-            if (isset($content[0])){
-                $result = $this->transmitNews($object, $content);
-            }else if (isset($content['MusicUrl'])){
-                $result = $this->transmitMusic($object, $content);
-            }
-        }else{
-            $result = $this->transmitText($object, $content);
-        }
-        return $result;
-    }
-
-
-
-    public function responseMsg()
-    {
-        $postStr = file_get_contents("php://input");
-        if (!empty($postStr)){
-            $this->logger("R \r\n".$postStr);
-            $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-            $RX_TYPE = trim($postObj->MsgType);
-
-            if (($postObj->MsgType == "event") && ($postObj->Event == "subscribe" || $postObj->Event == "unsubscribe")){
-                //过滤关注和取消关注事件
-            }else{
-
-            }
-
-            //消息类型分离
-            switch ($RX_TYPE)
-            {
-                case "event":
-                    $result = $this->receiveEvent($postObj);
-                    break;
-                case "text":
-                    if (strstr($postObj->Content, "第三方")){
-                        $result = $this->relayPart3("http://www.fangbei.org/test.php".'?'.$_SERVER['QUERY_STRING'], $postStr);
-                    }else{
-                        $result = $this->receiveText($postObj);
-                    }
-                    break;
-                case "image":
-                    $result = $this->receiveImage($postObj);
-                    break;
-                case "location":
-                    $result = $this->receiveLocation($postObj);
-                    break;
-                case "voice":
-                    $result = $this->receiveVoice($postObj);
-                    break;
-                case "video":
-                    $result = $this->receiveVideo($postObj);
-                    break;
-                case "link":
-                    $result = $this->receiveLink($postObj);
-                    break;
-                default:
-                    $result = "";
-                    break;
-            }
-
-            echo $result;
-        }else {
-            echo "";
-            exit;
-        }
     }
 }
