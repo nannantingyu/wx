@@ -119,7 +119,6 @@ class WechatCallbackApi
     {
         $postStr = file_get_contents("php://input");
         if (!empty($postStr)){
-            $this->logger("R \r\n".$postStr);
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $RX_TYPE = trim($postObj->MsgType);
 
