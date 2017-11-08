@@ -183,12 +183,12 @@ class WechatCallbackApi
             $content = "中国：".$this->response->bytes_to_emoji(0x1F1E8).$this->response->bytes_to_emoji(0x1F1F3)."\n仙人掌：".$this->response->bytes_to_emoji(0x1F335);
         }else if (strstr($keyword, "单图文")){
             $content = array();
-            $content[] = array("Title"=>"单图文标题",  "Description"=>"单图文内容", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
+            $content[] = array("Title"=>"市场趋势要紧紧抓在手里!你知道广州咋做的吗?",  "Description"=>"市场趋势要紧紧抓在手里!你知道广州咋做的吗?", "PicUrl"=>"http://image.yjshare.cn/images/8.jpg", "Url" =>"http://www.yjshare.cn/blog_21810");
         }else if (strstr($keyword, "图文") || strstr($keyword, "多图文")){
             $content = array();
-            $content[] = array("Title"=>"多图文1标题", "Description"=>"", "PicUrl"=>"http://image.yjshare.cn/images/4.jpg", "Url" =>"http://www.yjshare.cn/blog_21814");
-            $content[] = array("Title"=>"多图文2标题", "Description"=>"", "PicUrl"=>"http://image.yjshare.cn/images/5.jpg", "Url" =>"http://www.yjshare.cn/blog_21815");
-            $content[] = array("Title"=>"多图文3标题", "Description"=>"", "PicUrl"=>"http://image.yjshare.cn/images/6.jpg", "Url" =>"http://www.yjshare.cn/blog_21810");
+            $content[] = array("Title"=>"五常大米虽然好吃,但也有一些需要注意哦!", "Description"=>"五常大米虽然好吃,但也有一些需要注意哦!", "PicUrl"=>"http://image.yjshare.cn/images/4.jpg", "Url" =>"http://www.yjshare.cn/blog_1");
+            $content[] = array("Title"=>"水稻育种家田永太:好稻种就是农民所有念想的希望!", "Description"=>"水稻育种家田永太:好稻种就是农民所有念想的希望!", "PicUrl"=>"http://image.yjshare.cn/images/5.jpg", "Url" =>"http://www.yjshare.cn/blog_10496");
+            $content[] = array("Title"=>"男人为什么离不开酒?写的太好了,句句入骨!", "Description"=>"男人为什么离不开酒?写的太好了,句句入骨!", "PicUrl"=>"http://image.yjshare.cn/images/6.jpg", "Url" =>"http://www.yjshare.cn/blog_1897");
         }else if (strstr($keyword, "音乐")){
             $content = array("Title"=>"惠化洞", "Description"=>"请回答1988", "MusicUrl"=>"http://image.yjshare.cn/images/%E7%BB%B5%E7%BE%8A.mp3", "HQMusicUrl"=>"http://image.yjshare.cn/images/%E6%83%A0%E5%8C%96%E6%B4%9E.mp3");
         }else{
