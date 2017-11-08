@@ -6,7 +6,7 @@ class WxResponse {
      * @param $object
      * @return string
      */
-    private function receiveImage($object)
+    public function receiveImage($object)
     {
         $content = array("MediaId"=>$object->MediaId);
         $result = $this->transmitImage($object, $content);
@@ -18,7 +18,7 @@ class WxResponse {
      * @param $object
      * @return string
      */
-    private function receiveLocation($object)
+    public function receiveLocation($object)
     {
         $content = "你发送的是位置，经度为：".$object->Location_Y."；纬度为：".$object->Location_X."；缩放级别为：".$object->Scale."；位置为：".$object->Label;
         $result = $this->transmitText($object, $content);
@@ -30,7 +30,7 @@ class WxResponse {
      * @param $object
      * @return string
      */
-    private function receiveVoice($object)
+    public function receiveVoice($object)
     {
         if (isset($object->Recognition) && !empty($object->Recognition)){
             $content = "你刚才说的是：".$object->Recognition;
@@ -47,7 +47,7 @@ class WxResponse {
      * @param $object
      * @return string
      */
-    private function receiveVideo($object)
+    public function receiveVideo($object)
     {
         $content = array("MediaId"=>$object->MediaId, "ThumbMediaId"=>$object->ThumbMediaId, "Title"=>"", "Description"=>"");
         $result = $this->transmitVideo($object, $content);
@@ -59,7 +59,7 @@ class WxResponse {
      * @param $object
      * @return string
      */
-    private function receiveLink($object)
+    public function receiveLink($object)
     {
         $content = "你发送的是链接，标题为：".$object->Title."；内容为：".$object->Description."；链接地址为：".$object->Url;
         $result = $this->transmitText($object, $content);
@@ -72,7 +72,7 @@ class WxResponse {
      * @param $content
      * @return string
      */
-    private function transmitText($object, $content)
+    public function transmitText($object, $content)
     {
         if (!isset($content) || empty($content)){
             return "";
@@ -133,7 +133,7 @@ class WxResponse {
      * @param $musicArray
      * @return string
      */
-    private function transmitMusic($object, $musicArray)
+    public function transmitMusic($object, $musicArray)
     {
         if(!is_array($musicArray)){
             return "";
@@ -165,7 +165,7 @@ class WxResponse {
      * @param $imageArray
      * @return string
      */
-    private function transmitImage($object, $imageArray)
+    public function transmitImage($object, $imageArray)
     {
         $itemTpl = "<Image>
             <MediaId><![CDATA[%s]]></MediaId>
@@ -191,7 +191,7 @@ class WxResponse {
      * @param $voiceArray
      * @return string
      */
-    private function transmitVoice($object, $voiceArray)
+    public function transmitVoice($object, $voiceArray)
     {
         $itemTpl = "<Voice>
                 <MediaId><![CDATA[%s]]></MediaId>
@@ -216,7 +216,7 @@ class WxResponse {
      * @param $videoArray
      * @return string
      */
-    private function transmitVideo($object, $videoArray)
+    public function transmitVideo($object, $videoArray)
     {
         $itemTpl = "<Video>
                 <MediaId><![CDATA[%s]]></MediaId>
@@ -244,7 +244,7 @@ class WxResponse {
      * @param $object
      * @return string
      */
-    private function transmitService($object)
+    public function transmitService($object)
     {
         $xmlTpl = "<xml>
                 <ToUserName><![CDATA[%s]]></ToUserName>
@@ -262,7 +262,7 @@ class WxResponse {
      * @param $rawData
      * @return mixed
      */
-    private function relayPart3($url, $rawData)
+    public function relayPart3($url, $rawData)
     {
         $headers = array("Content-Type: text/xml; charset=utf-8");
         $ch = curl_init();
@@ -281,7 +281,7 @@ class WxResponse {
      * @param $cp
      * @return string
      */
-    function bytes_to_emoji($cp)
+    public function bytes_to_emoji($cp)
     {
         if ($cp > 0x10000){       # 4 bytes
             return chr(0xF0 | (($cp & 0x1C0000) >> 18)).chr(0x80 | (($cp & 0x3F000) >> 12)).chr(0x80 | (($cp & 0xFC0) >> 6)).chr(0x80 | ($cp & 0x3F));
