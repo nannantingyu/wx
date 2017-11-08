@@ -1,5 +1,5 @@
 <?php
-
+use Think\Log;
 header('Content-type:text');
 define("TOKEN", "NANNANTINGYU");
 
@@ -52,6 +52,8 @@ class WechatCallbackApi
                         <Content><![CDATA[%s]]></Content>
                         <FuncFlag>0</FuncFlag>
                         </xml>";
+
+            Log::write("[Get Message] ". $fromUsername. "-->". $toUsername. "-->". $keyword);
             if($keyword == "?" || $keyword == "？")
             {
                 $msgType = "text";
