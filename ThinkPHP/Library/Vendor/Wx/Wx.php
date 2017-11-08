@@ -41,11 +41,14 @@ class WechatCallbackApi
 
         if (!empty($postStr)){
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-            $fromUsername = $postObj->FromUserName;
-            $toUsername = $postObj->ToUserName;
-            $keyword = trim($postObj->Content);
-            $time = time();
-            $textTpl = "<xml>
+
+            if ($postObj->Event == "subscribe" || $postObj->Event == "unsubscribe"){
+                $fromUsername = $postObj->FromUserName;
+                $toUsername = $postObj->ToUserName;
+                $keyword = trim($postObj->Content);
+                $time = time();
+
+                $textTpl = "<xml>
                         <ToUserName><![CDATA[%s]]></ToUserName>
                         <FromUserName><![CDATA[%s]]></FromUserName>
                         <CreateTime>%s</CreateTime>
@@ -54,14 +57,35 @@ class WechatCallbackApi
                         <FuncFlag>0</FuncFlag>
                         </xml>";
 
-            Log::write("[Get Message] ". $fromUsername. "-->". $toUsername. "-->". $keyword);
-            if($keyword == "?" || $keyword == "？")
-            {
                 $msgType = "text";
-                $contentStr = date("Y-m-d H:i:s",time());
+                $contentStr = "你好，$fromUsername， 欢迎关注喃喃书社，我门会定期为您推荐值得一读的书籍，一起进步吧！";
                 $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                 echo $resultStr;
+
+            }else{
+                $fromUsername = $postObj->FromUserName;
+                $toUsername = $postObj->ToUserName;
+                $keyword = trim($postObj->Content);
+                $time = time();
+                $textTpl = "<xml>
+                        <ToUserName><![CDATA[%s]]></ToUserName>
+                        <FromUserName><![CDATA[%s]]></FromUserName>
+                        <CreateTime>%s</CreateTime>
+                        <MsgType><![CDATA[%s]]></MsgType>
+                        <Content><![CDATA[%s]]></Content>
+                        <FuncFlag>0</FuncFlag>
+                        </xml>";
+
+                Log::write("[Get Message] ". $fromUsername. "-->". $toUsername. "-->". $keyword);
+                if($keyword == "?" || $keyword == "？")
+                {
+                    $msgType = "text";
+                    $contentStr = date("Y-m-d H:i:s",time());
+                    $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                    echo $resultStr;
+                }
             }
+
         }else{
             echo "";
             exit;
