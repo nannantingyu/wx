@@ -243,8 +243,13 @@ class WechatCallbackApi
         switch ($object->Event)
         {
             case "subscribe":
-                $content = "欢迎关注喃喃书社";
-                $content .= (!empty($object->EventKey))?("\n来自二维码场景 ".str_replace("qrscene_","",$object->EventKey)):"";
+//                $content = "欢迎关注喃喃书社";
+//                $content .= (!empty($object->EventKey))?("\n来自二维码场景 ".str_replace("qrscene_","",$object->EventKey)):"";
+
+                $content = "优迅医学感谢您的关注，我们将竭诚为您服务。\n
+                            基因体检用户样本信息绑定，请点击链接：样本绑定（超链接）\n
+                            如有疑问可拨打客服咨询热线4006-881-555，我们的工作时间是周一至周五9:00-18:00。\n
+                            All For Health · All For Clinical";
                 break;
             case "unsubscribe":
                 $content = "取消关注";
@@ -265,7 +270,27 @@ class WechatCallbackApi
                 $content = "跳转链接 ".$object->EventKey;
                 break;
             case "SCAN":
-                $content = "扫描场景 ".$object->EventKey;
+                $eventKey = "扫描场景 ".$object->EventKey;
+                switch($eventKey) {
+                    case 10000:
+                        $content = "优迅医学感谢您的关注，我们将竭诚为您服务。\n
+                            基因体检用户样本信息绑定，请点击链接：样本绑定（超链接）\n
+                            如有疑问可拨打客服咨询热线4006-881-555，我们的工作时间是周一至周五9:00-18:00。\n
+                            All For Health · All For Clinical";
+                        break;
+                    case 10001:
+                        $content = "优迅医学感谢您的关注，我们将竭诚为您服务。\n
+                            你扫描了第二种的情况，代码逻辑写到这里（最好另外起一个方法，然后this->func()调用哦）";
+                        break;
+                    case 10002:
+                        $content = "优迅医学感谢您的关注，我们将竭诚为您服务。\n
+                            你扫描了第三种的情况，跟第二种是一样的，另外起一个方法啊，不要让一个方法显得那么臃肿（如果有业务逻辑的话），尽量保证一个方法只做一个很小的事情";
+                        break;
+                    default:
+                        $content = "你选择了其他的场景，临时的可以有很多，但是有效期最多30天";
+                        break;
+                }
+
                 break;
             case "LOCATION":
                 $content = "上传位置：纬度 ".$object->Latitude.";经度 ".$object->Longitude;
@@ -316,7 +341,7 @@ class WechatCallbackApi
     /**
      * 获取带参二维码
      */
-    public function getqrcode() {
+    public function getqrcode($id) {
         $access_token = $this->getAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=$access_token";
         $qrcode = array(
@@ -324,7 +349,7 @@ class WechatCallbackApi
             'action_name'=> 'QR_SCENE',
             'action_info'=> array(
                 "scene" => array(
-                    "scene_id"=> 10000
+                    "scene_id"=> $id
                 )
             )
         );
@@ -333,13 +358,17 @@ class WechatCallbackApi
             'action_name'=> 'QR_LIMIT_SCENE',
             'action_info'=> array(
                 "scene"=> array(
-                    "scene_id"=> 1000
+                    "scene_id"=> $id
                 )
             )
         );
 
-        $data = $this->https_request($url, $qrcode);
+        $data = $this->https_request($url, json_encode($qrcode_forever));
         $result = json_decode($data, true);
+
+        if(isset($result['ticket'])) {
+            return "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".urlencode($result['ticket']);
+        }
 
         return $result;
     }
