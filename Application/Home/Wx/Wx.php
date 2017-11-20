@@ -12,6 +12,9 @@ class WechatCallbackApi
         $this->response = new WxResponse();
     }
 
+    /**
+     * 验证服务器
+     */
     public function valid()
     {
         $echoStr = $_GET["echostr"];
@@ -22,6 +25,10 @@ class WechatCallbackApi
         }
     }
 
+    /**
+     * 验证签名
+     * @return bool
+     */
     private function checkSignature()
     {
         $signature = $_GET["signature"];
@@ -41,6 +48,10 @@ class WechatCallbackApi
         }
     }
 
+    /**
+     * 获取accessToken
+     * @return mixed accessToken
+     */
     public function getAccessToken() {
 //        $appid = "wx08102f9708925685";
 //        $appsecret = "eae30743c861f7853a27e6c6e5af4405";
@@ -61,6 +72,9 @@ class WechatCallbackApi
         return $access_token;
     }
 
+    /**
+     * 设置菜单
+     */
     public function setMenu() {
         $jsonmenu = array("button"=>[
             [
@@ -100,7 +114,13 @@ class WechatCallbackApi
         var_dump($result);
     }
 
-    private function https_request($url,$data = null){
+    /**
+     * curl 封装http请求
+     * @param $url
+     * @param null $data
+     * @return mixed
+     */
+    private function https_request($url, $data = null){
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -109,12 +129,17 @@ class WechatCallbackApi
             curl_setopt($curl, CURLOPT_POST, 1);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         }
+
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $output = curl_exec($curl);
         curl_close($curl);
+
         return $output;
     }
 
+    /**
+     * 回复消息模板
+     */
     public function responseMsg()
     {
         $postStr = file_get_contents("php://input");
@@ -285,6 +310,36 @@ class WechatCallbackApi
         }else{
             $result = $this->response->transmitText($object, $content);
         }
+        return $result;
+    }
+
+    /**
+     * 获取带参二维码
+     */
+    public function getqrcode($url) {
+        $access_token = $this->getAccessToken();
+        $qrcode = array(
+            'expire_seconds'=> 1800,
+            'action_name'=> 'QR_SCENE',
+            'action_info'=> array(
+                "scene" => array(
+                    "scene_id"=> 10000
+                )
+            )
+        );
+
+        $qrcode_forever = array(
+            'action_name'=> 'QR_LIMIT_SCENE',
+            'action_info'=> array(
+                "scene"=> array(
+                    "scene_id"=> 1000
+                )
+            )
+        );
+
+        $data = $this->https_request($url, $qrcode);
+        $result = json_decode($data, true);
+
         return $result;
     }
 }
