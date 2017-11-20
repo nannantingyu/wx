@@ -270,7 +270,7 @@ class WechatCallbackApi
                 $content = "跳转链接 ".$object->EventKey;
                 break;
             case "SCAN":
-                $eventKey = "扫描场景 ".$object->EventKey;
+                $eventKey = $object->EventKey;
                 switch($eventKey) {
                     case "10000":
                         $content = "优迅医学感谢您的关注，我们将竭诚为您服务。\n

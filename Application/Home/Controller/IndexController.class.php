@@ -25,7 +25,7 @@ class IndexController extends Controller {
 
         if (in_array($id, [10000, 10001, 10002, 10003, 10004])) {
             $qrcode = $wechatObj->getqrcode($id);
-            return $qrcode;
+            print_r($qrcode);
         }
     }
 }
