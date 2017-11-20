@@ -316,8 +316,9 @@ class WechatCallbackApi
     /**
      * 获取带参二维码
      */
-    public function getqrcode($url) {
+    public function getqrcode() {
         $access_token = $this->getAccessToken();
+        $url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=$access_token";
         $qrcode = array(
             'expire_seconds'=> 1800,
             'action_name'=> 'QR_SCENE',

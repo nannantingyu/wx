@@ -18,4 +18,11 @@ class IndexController extends Controller {
         $wechatObj = new \WechatCallbackApi();
         $wechatObj->getMenu();
     }
+
+    public function qrcode() {
+        $wechatObj = new \WechatCallbackApi();
+        $qrcode = $wechatObj->getqrcode();
+
+        dump($qrcode);
+    }
 }
