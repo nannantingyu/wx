@@ -10,6 +10,26 @@ class WechatCallbackApi
     private $response;
     public function __construct() {
         $this->response = new WxResponse();
+        $this->token = $this->getAccessToken();
+    }
+
+    /**
+     * 接收模板消息
+     */
+    public function receiveTemplate() {
+        $data = [
+            'touser'        =>  'ol_P9tzxiJ42CBaL6kHqyZoqxWOA',
+            'template_id'   =>  'K4lD6uHT4nfIiHBWDm0-heF5Cbmxo6o9WZ1KOQG0BuM',
+            'url'           =>  'http://www.yjshare.cn',
+            'topcolor'      =>  '#7B68EE',
+            'data'          =>  [
+            ]
+        ];
+
+        $url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$this->token;
+        $res = $this->https_request($url, json_encode($data));
+
+        return json_decode($res, true);
     }
 
     /**
@@ -53,8 +73,6 @@ class WechatCallbackApi
      * @return mixed accessToken
      */
     public function getAccessToken() {
-//        $appid = "wx08102f9708925685";
-//        $appsecret = "eae30743c861f7853a27e6c6e5af4405";
         $appid = 'wx4ed1bb58b760662b';
         $appsecret = '670f41a3eb4074247c6963f8a2afcebf';
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$appsecret";
