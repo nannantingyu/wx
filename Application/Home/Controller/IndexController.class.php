@@ -47,4 +47,36 @@ class IndexController extends Controller {
             'msg' => $result['errmsg']
         );
     }
+
+    public function sendmessage() {
+        $articles = M("weixin_article")
+            ->join("crawl_weixin_article_detail on crawl_weixin_article.id=crawl_weixin_article_detail.id")
+            ->order("hits desc")
+            ->order("publish_time desc")
+            ->limit(2)
+            ->select();
+
+        dump($articles);
+        $msg = [];
+        foreach($articles as $article) {
+
+            $type = "image";
+            $filepath = json_decode($article['image'])[0];
+            $filedata = array("media"=> "@".$filepath);
+
+            $media_id = $this->wechatObj->uploadfile($type, $filedata);
+            dump($media_id);
+
+            $m = [
+                "author"=> "喃喃书社",
+                "title"=> $article['title'],
+                "content"=> $article['body'],
+                "digest"=> $article['description']
+            ];
+
+            $msg[] = $m;
+        }
+
+        dump($msg);
+    }
 }

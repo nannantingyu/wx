@@ -138,7 +138,7 @@ class WechatCallbackApi
      * @param null $data
      * @return mixed
      */
-    private function https_request($url, $data = null){
+    public function https_request($url, $data = null){
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -203,6 +203,17 @@ class WechatCallbackApi
             echo "";
             exit;
         }
+    }
+
+    /**
+     * 上传文件
+     */
+    public function uploadfile($type, $filedata) {
+        $token = $this->getAccessToken();
+        $url = "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=$token&type=$type";
+        $result = $this->https_request($url, $filedata);
+
+        return $result;
     }
 
     /**
