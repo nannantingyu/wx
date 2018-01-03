@@ -11,7 +11,6 @@ class IndexController extends Controller {
     }
 
     public function index() {
-echo 123345;die;
         if (isset($_GET['echostr'])) {
             $this->wechatObj->valid();
         }else{
@@ -49,36 +48,64 @@ echo 123345;die;
         );
     }
 
-    public function sendmessage() {echo(12345);die;
+    public function sendmessage() {
         $articles = M("weixin_article")
             ->join("crawl_weixin_article_detail on crawl_weixin_article.id=crawl_weixin_article_detail.id")
-            ->order("hits desc")
-            ->order("publish_time desc")
+            ->order("publish_time desc, hits desc, crawl_weixin_article.updated_time desc")
             ->limit(2)
             ->select();
-echo 777777;
-        print_r($articles);
-die;
-        $msg = [];
+
+        $msg = ["articles"=>[]];
+        $savepath = $_SERVER['DOCUMENT_ROOT']."/Public/Uploads/";
         foreach($articles as $article) {
 
             $type = "image";
             $filepath = json_decode($article['image'])[0];
-            $filedata = array("media"=> file_get_contents($filepath));
+            $savename = $savepath . basename($filepath);
+
+            file_put_contents($savename, file_get_contents($filepath));
+            if(!file_exists($savename)) {
+                $savename = $savepath."zhuanshu.jpg";
+            }
+
+            if(class_exists('\CURLFile')) {
+                $filedata = array("media"=> new \CURLFile($savename));
+            }
+            else {
+                $filedata = array("media"=> "@".$savename);
+            }
 
             $media_id = $this->wechatObj->uploadfile($type, $filedata);
-            dump($media_id);
-
             $m = [
                 "author"=> "喃喃书社",
-                "title"=> $article['title'],
+                "title"=> mb_substr($article['title'], 0, 10)."...",
                 "content"=> $article['body'],
-                "digest"=> $article['description']
+                "digest"=> mb_substr($article['description'], 0, 12)."...",
+                "thumb_media_id"=> $media_id,
+                "content_source_url"=> "https://www.yjshare.cn/blog_".$article['id']
             ];
 
-            $msg[] = $m;
+            $msg["articles"][] = $m;
         }
 
-        dump($msg);
+
+        dump(json_encode($msg));
+        $content_id = $this->wechatObj->uploadNews(json_encode($msg));
+        dump($content_id);
+
+//        $followers = $this->wechatObj->getFollower();
+//        dump($followers);
+//
+//        $send_msg = [
+//            "touser"=> $followers,
+//            "mpnews"=> [
+//                "media_id"=> $content_id
+//            ],
+//            "msgtype"=> "mpnews",
+//            "send_ignore_reprint"=> 0
+//        ];
+//
+//        $result = $this->wechatObj->multisend(json_encode($send_msg));
+//        dump($result);
     }
 }

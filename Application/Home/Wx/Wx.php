@@ -73,8 +73,10 @@ class WechatCallbackApi
      * @return mixed accessToken
      */
     public function getAccessToken() {
-        $appid = 'wx4ed1bb58b760662b';
-        $appsecret = '670f41a3eb4074247c6963f8a2afcebf';
+//        $appid = 'wx4ed1bb58b760662b';
+//        $appsecret = '670f41a3eb4074247c6963f8a2afcebf';
+        $appid = "wx74bf09fac4a4ff60";
+        $appsecret = "cd3c09e9496d3a7969789d7446c6bae4";
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$appsecret";
 
         $ch = curl_init();
@@ -209,9 +211,40 @@ class WechatCallbackApi
      * 上传文件
      */
     public function uploadfile($type, $filedata) {
-        $token = $this->getAccessToken();
-        $url = "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=$token&type=$type";
+        $url = "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=$this->token&type=$type";
         $result = $this->https_request($url, $filedata);
+
+        return $result;
+    }
+
+    /**
+     * 获取关注者
+     * @return mixed
+     */
+    public function getFollower() {
+        $url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=$this->token&next_openid=";
+        $result = $this->https_request($url);
+        $result = json_decode($result, true);
+
+        return $result['data']['openid'];
+    }
+
+    /**
+     * 上传图文消息
+     * @param $data
+     * @return mixed
+     */
+    public function uploadNews($data) {
+        $url = "https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=$this->token";
+        $result = $this->https_request($url, $data);
+
+        return $result;
+    }
+
+
+    public function multisend($msg) {
+        $url = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=$this->token";
+        $result = $this->https_request($url, $msg);
 
         return $result;
     }
