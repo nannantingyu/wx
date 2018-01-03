@@ -52,18 +52,21 @@ class IndexController extends Controller {
         $articles = M("weixin_article")
             ->join("crawl_weixin_article_detail on crawl_weixin_article.id=crawl_weixin_article_detail.id")
             ->order("publish_time desc, hits desc, crawl_weixin_article.updated_time desc")
-            ->limit(2)
+            ->limit(4)
             ->select();
 
         $msg = ["articles"=>[]];
         $savepath = $_SERVER['DOCUMENT_ROOT']."/Public/Uploads/";
         foreach($articles as $article) {
-
             $type = "image";
             $filepath = json_decode($article['image'])[0];
             $savename = $savepath . basename($filepath);
 
-            file_put_contents($savename, file_get_contents($filepath));
+            if(!file_exists($savename))
+            {
+                file_put_contents($savename, file_get_contents($filepath));
+            }
+
             if(!file_exists($savename)) {
                 $savename = $savepath."zhuanshu.jpg";
             }
@@ -81,7 +84,7 @@ class IndexController extends Controller {
                 "title"=> mb_substr($article['title'], 0, 10)."...",
                 "content"=> $article['body'],
                 "digest"=> mb_substr($article['description'], 0, 12)."...",
-                "thumb_media_id"=> $media_id,
+                "thumb_media_id"=> $media_id['media_id'],
                 "content_source_url"=> "https://www.yjshare.cn/blog_".$article['id']
             ];
 
@@ -89,23 +92,29 @@ class IndexController extends Controller {
         }
 
 
-        dump(json_encode($msg));
-        $content_id = $this->wechatObj->uploadNews(json_encode($msg));
-        dump($content_id);
+        $content_id = $this->wechatObj->uploadNews(json_encode($msg, JSON_UNESCAPED_UNICODE));
+        $send_media_id = $content_id['media_id'];
 
-//        $followers = $this->wechatObj->getFollower();
-//        dump($followers);
-//
-//        $send_msg = [
-//            "touser"=> $followers,
-//            "mpnews"=> [
-//                "media_id"=> $content_id
-//            ],
-//            "msgtype"=> "mpnews",
-//            "send_ignore_reprint"=> 0
-//        ];
-//
-//        $result = $this->wechatObj->multisend(json_encode($send_msg));
-//        dump($result);
+        //目前测试号无法群发消息，订阅号认证后才能发送
+        /**
+        $followers = $this->wechatObj->getFollower();
+        $send_msg = [
+            "touser"=> $followers,
+            "mpnews"=> [
+                "media_id"=> $send_media_id
+            ],
+            "msgtype"=> "mpnews",
+            "send_ignore_reprint"=> 0
+        ];
+
+        $result2 = $this->wechatObj->multisend(json_encode($send_msg, JSON_UNESCAPED_UNICODE));
+        */
+
+        $preview_user_list = ["ol_P9tzxiJ42CBaL6kHqyZoqxWOA", "ol_P9t3NUS-sz-cVzSjUMxYu5a3E"];
+        foreach($preview_user_list as $user) {
+            $result = $this->wechatObj->previewMsg($send_media_id, $user);
+        }
+
+        dump($result);
     }
 }

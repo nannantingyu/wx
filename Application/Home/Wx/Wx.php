@@ -73,10 +73,10 @@ class WechatCallbackApi
      * @return mixed accessToken
      */
     public function getAccessToken() {
-//        $appid = 'wx4ed1bb58b760662b';
-//        $appsecret = '670f41a3eb4074247c6963f8a2afcebf';
-        $appid = "wx74bf09fac4a4ff60";
-        $appsecret = "cd3c09e9496d3a7969789d7446c6bae4";
+        $appid = 'wx4ed1bb58b760662b';
+        $appsecret = '670f41a3eb4074247c6963f8a2afcebf';
+//        $appid = "wx74bf09fac4a4ff60";
+//        $appsecret = "cd3c09e9496d3a7969789d7446c6bae4";
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$appsecret";
 
         $ch = curl_init();
@@ -213,6 +213,7 @@ class WechatCallbackApi
     public function uploadfile($type, $filedata) {
         $url = "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=$this->token&type=$type";
         $result = $this->https_request($url, $filedata);
+        $result = json_decode($result, true);
 
         return $result;
     }
@@ -237,11 +238,36 @@ class WechatCallbackApi
     public function uploadNews($data) {
         $url = "https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=$this->token";
         $result = $this->https_request($url, $data);
+        $result = json_decode($result, true);
 
         return $result;
     }
 
 
+    /**
+     * 预览图文消息
+     */
+    public function previewMsg($media_id, $touser) {
+        $url = "https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token=$this->token";
+        $data = [
+            "touser"=> $touser,
+            "mpnews"=> [
+                "media_id"=> $media_id
+            ],
+            "msgtype"=> "mpnews"
+        ];
+
+        $result = $this->https_request($url, json_encode($data));
+        $result = json_decode($result, true);
+
+        return $result;
+    }
+
+    /**
+     * 群发消息
+     * @param $msg
+     * @return mixed
+     */
     public function multisend($msg) {
         $url = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=$this->token";
         $result = $this->https_request($url, $msg);
