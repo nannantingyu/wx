@@ -11,6 +11,7 @@ class IndexController extends Controller {
     }
 
     public function index() {
+echo 123345;die;
         if (isset($_GET['echostr'])) {
             $this->wechatObj->valid();
         }else{
@@ -48,21 +49,22 @@ class IndexController extends Controller {
         );
     }
 
-    public function sendmessage() {
+    public function sendmessage() {echo(12345);die;
         $articles = M("weixin_article")
             ->join("crawl_weixin_article_detail on crawl_weixin_article.id=crawl_weixin_article_detail.id")
             ->order("hits desc")
             ->order("publish_time desc")
             ->limit(2)
             ->select();
-
-        dump($articles);
+echo 777777;
+        print_r($articles);
+die;
         $msg = [];
         foreach($articles as $article) {
 
             $type = "image";
             $filepath = json_decode($article['image'])[0];
-            $filedata = array("media"=> "@".$filepath);
+            $filedata = array("media"=> file_get_contents($filepath));
 
             $media_id = $this->wechatObj->uploadfile($type, $filedata);
             dump($media_id);
