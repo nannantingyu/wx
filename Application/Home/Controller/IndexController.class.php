@@ -94,10 +94,11 @@ class IndexController extends Controller {
 
         $content_id = $this->wechatObj->uploadNews(json_encode($msg, JSON_UNESCAPED_UNICODE));
         $send_media_id = $content_id['media_id'];
+        dump($content_id);
 
+        $followers = $this->wechatObj->getFollower();
         //目前测试号无法群发消息，订阅号认证后才能发送
         /**
-        $followers = $this->wechatObj->getFollower();
         $send_msg = [
             "touser"=> $followers,
             "mpnews"=> [
@@ -110,8 +111,7 @@ class IndexController extends Controller {
         $result2 = $this->wechatObj->multisend(json_encode($send_msg, JSON_UNESCAPED_UNICODE));
         */
 
-        $preview_user_list = ["ol_P9tzxiJ42CBaL6kHqyZoqxWOA", "ol_P9t3NUS-sz-cVzSjUMxYu5a3E"];
-        foreach($preview_user_list as $user) {
+        foreach($followers as $user) {
             $result = $this->wechatObj->previewMsg($send_media_id, $user);
         }
 
