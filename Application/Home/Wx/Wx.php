@@ -354,7 +354,7 @@ class WechatCallbackApi
 //                            "Url" =>"http://www.yjshare.cn/blog_21807"
 //                        );
 
-                        $articles = M("weixin_article")->order("created_time desc")->limit(5)->select();
+                        $articles = M("weixin_article")->order("created_time desc")->limit(3)->select();
                         foreach($articles as $article) {
                             $images = json_decode($article['image']);
                             $content[] = array(
