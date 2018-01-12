@@ -376,7 +376,7 @@ class WechatCallbackApi
 
                 break;
             case "LOCATION":
-                $content = "上传位置：纬度 ".$object->Latitude.";经度 ".$object->Longitude;
+//                $content = "上传位置：纬度 ".$object->Latitude.";经度 ".$object->Longitude;
                 break;
             case "scancode_waitmsg":
                 if ($object->ScanCodeInfo->ScanType == "qrcode"){
@@ -411,11 +411,11 @@ class WechatCallbackApi
 
         if(is_array($content)){
             if (isset($content[0]['PicUrl'])){
-                $result = $this->transmitNews($object, $content);
+                $result = $this->response->transmitNews($object, $content);
             }else if (isset($content['MusicUrl'])){
-                $result = $this->transmitMusic($object, $content);
+                $result = $this->response->transmitMusic($object, $content);
             }
-        }else{
+        }elseif($content){
             $result = $this->response->transmitText($object, $content);
         }
         return $result;
