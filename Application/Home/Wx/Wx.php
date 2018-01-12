@@ -358,8 +358,8 @@ class WechatCallbackApi
                         foreach($articles as $article) {
                             $images = json_decode($article['image']);
                             $content[] = array(
-                                "Title"=> $article['title'],
-                                "Description"=> $article['description'],
+                                "Title"=> mb_substr($article['title'], 0, 12)."...",
+                                "Description"=> mb_substr($article['description'], 0, 22),
                                 "PicUrl"=> count($images)>0?$images[0]:"",
                                 "Url" =>"http://www.yjshare.cn/blog_".$article['id']
                             );

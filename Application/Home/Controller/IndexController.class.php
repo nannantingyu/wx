@@ -48,6 +48,29 @@ class IndexController extends Controller {
         );
     }
 
+    public function test() {
+        $content = array();
+//                        $content[] = array(
+//                            "Title"=>"Python入门到放弃",
+//                            "Description"=>"",
+//                            "PicUrl"=>"https://image.yjshare.cn/2018/1/12/jPCNAny2CqTURpjb5TDhlicpk9icHichtz5AUrRVHHynebM9ibJ2Obo4oMAVelwgstRRHEmD1ibxoJOGdNh5KJl9USg.jpg",
+//                            "Url" =>"http://www.yjshare.cn/blog_21807"
+//                        );
+
+        $articles = M("weixin_article")->order("created_time desc")->limit(5)->select();
+        foreach($articles as $article) {
+            $images = json_decode($article['image']);
+            $content[] = array(
+                "Title"=> $article['title'],
+                "Description"=> $article['description'],
+                "PicUrl"=> count($images)>0?$images[0]:"",
+                "Url" =>"http://www.yjshare.cn/blog_".$article['id']
+            );
+        }
+
+        dump($content);
+    }
+
     public function sendmessage() {
         $articles = M("weixin_article")
             ->join("crawl_weixin_article_detail on crawl_weixin_article.id=crawl_weixin_article_detail.id")
@@ -94,7 +117,6 @@ class IndexController extends Controller {
 
         $content_id = $this->wechatObj->uploadNews(json_encode($msg, JSON_UNESCAPED_UNICODE));
         $send_media_id = $content_id['media_id'];
-        dump($content_id);
 
         $followers = $this->wechatObj->getFollower();
         //目前测试号无法群发消息，订阅号认证后才能发送
