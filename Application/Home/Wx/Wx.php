@@ -347,7 +347,7 @@ class WechatCallbackApi
                 {
                     case "Python":
                         $content = array();
-                        $content[] = array("Title"=>"Python入门到放弃", "Description"=>"", "PicUrl"=>"http://image.yjshare.cn/images/2.jpg", "Url" =>"http://www.yjshare.cn/blog_21807");
+                        $content[] = array("Title"=>"Python入门到放弃", "Description"=>"", "PicUrl"=>"https://image.yjshare.cn/2018/1/12/jPCNAny2CqTURpjb5TDhlicpk9icHichtz5AUrRVHHynebM9ibJ2Obo4oMAVelwgstRRHEmD1ibxoJOGdNh5KJl9USg.jpg", "Url" =>"http://www.yjshare.cn/blog_21807");
                         break;
                     default:
                         $content = "点击菜单：".$object->EventKey;
