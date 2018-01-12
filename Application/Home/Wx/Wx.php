@@ -346,7 +346,7 @@ class WechatCallbackApi
                 switch ($object->EventKey)
                 {
                     case "Python":
-                        $content = M("weixin_article")->getLatestArticleForWinxin(4);
+                        $content = D("weixin_article")->getLatestArticleForWinxin(4);
                         break;
                     default:
                         $content = "点击菜单：".$object->EventKey;
