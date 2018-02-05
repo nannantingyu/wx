@@ -8,6 +8,7 @@ class IndexController extends Controller {
     private $wechatObj;
     public function __construct(){
         $this->wechatObj = new \WechatCallbackApi();
+        parent::__construct();
     }
 
     public function index() {
@@ -16,6 +17,10 @@ class IndexController extends Controller {
         }else{
             $this->wechatObj->responseMsg();
         }
+    }
+
+    public function html() {
+        $this->display("Index/index");
     }
 
     public function menu() {
