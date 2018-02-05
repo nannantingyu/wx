@@ -20,6 +20,8 @@ class IndexController extends Controller {
     }
 
     public function html() {
+        $pk = $this->wechatObj->getSignPackage();
+        $this->assign('pk', $pk);
         $this->display("Index/index");
     }
 
