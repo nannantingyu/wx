@@ -153,17 +153,17 @@ class WechatCallbackApi
     public function setMenu() {
         $jsonmenu = array("button"=>[
             [
-                "name"=>"天气预报",
+                "name"=>"天津",
                 "sub_button"=> [
                     [
-                        "type"=>"click", "name"=>"北京天气", "key"=>"天气北京"
+                        "type"=>"click", "name"=>"天津天气", "key"=>"天津天气"
                     ],
                     [
-                        "type"=>"view", "name"=>"本地天气", "url"=>"http://www.yjshare.cn"
+                        "type"=>"view", "name"=>"天津小区", "url"=>"https://www.yjshare.cn/residential"
                     ]
                 ]
-           ],
-           [
+            ],
+            [
                "name"=>"今日推荐",
                "sub_button"=> [
                    [
@@ -179,7 +179,12 @@ class WechatCallbackApi
                        "type"=>"click", "name"=>"散文", "key"=>"散文"
                    ]
                ]
-           ]
+            ],
+            [
+                "name"=>"粮叔叔",
+                "type"=>"view",
+                "url"=>"https://www.yjshare.cn"
+            ]
         ]);
 
         $access_token = $this->getAccessToken();
