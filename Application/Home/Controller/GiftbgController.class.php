@@ -93,7 +93,7 @@ class GiftbgController extends Controller {
         $size = 26; //文字大小
         $font = PUBLICS."/ttf/yahei.TTF"; //字体user-img
         $font_heiti = PUBLICS."/ttf/heiti.TTF"; //字体user-img
-        $pict = PUBLICS."/GiftCard/image/base.jpg"; //目标图片
+        $pict = PUBLICS."/giftcard/image/base.jpg"; //目标图片
         //生成图片
         //header('Content-type:image/jpeg');
         //1、想要显示在图片上面的画
