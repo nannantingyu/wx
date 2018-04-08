@@ -26,25 +26,6 @@
 			}
 			
 		</style>
-		<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-		<script>
-		  // 注意：所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
-		  // 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
-		  // 完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
-		  wx.config({
-			debug: false,
-			appId: '{$data["appId"]}',
-			timestamp: '{$data["timestamp"]}',
-			nonceStr: '{$data["nonceStr"]}',
-			signature: '{$data["signature"]}',
-			jsApiList: [
-			'onMenuShareAppMessage',
-			'onMenuShareTimeline',
-			'onMenuShareQQ',
-			'onMenuShareWeibo',
-			]
-		  });
-		</script>
 	</head>
 	<body>
 		<div id="kuang">
@@ -58,22 +39,39 @@
 			</div>
 		</div>
 	</body>
-<script>
-var justurl = "http://wx.yjshare.cn/";
-		/***********************************分享******************************************/
-wx.ready(function () {
-	var shareData = {
-		title: '我的优馨安无创产前基因检测报告',
-		  desc: '经优馨安无创产前基因检测得知，宝宝是唐氏综合征低风险，我希望能跟你共同分享这份喜悦。',
-		  link: window.location.href,
-		  imgUrl: justurl+'/Public/share/{$img}'
-	  };
-	wx.showOptionMenu();
-	wx.onMenuShareAppMessage(shareData);
-	wx.onMenuShareTimeline(shareData);
-	wx.onMenuShareQQ(shareData);
-	wx.onMenuShareWeibo(shareData);
-})
+	<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script>
+		// 注意：所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+		// 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+		// 完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+		wx.config({
+			debug: false,
+			appId: '{$data["appId"]}',
+			timestamp: '{$data["timestamp"]}',
+			nonceStr: '{$data["nonceStr"]}',
+			signature: '{$data["signature"]}',
+			jsApiList: [
+				'onMenuShareAppMessage',
+				'onMenuShareTimeline',
+				'onMenuShareQQ',
+				'onMenuShareWeibo',
+			]
+		});
 
-</script>
+		var justurl = "http://wx.yjshare.cn/";
+				/***********************************分享******************************************/
+		wx.ready(function () {
+			var shareData = {
+				title: '我的优馨安无创产前基因检测报告',
+				  desc: '经优馨安无创产前基因检测得知，宝宝是唐氏综合征低风险，我希望能跟你共同分享这份喜悦。',
+				  link: window.location.href,
+				  imgUrl: justurl+'/Public/share/{$img}'
+			  };
+			wx.showOptionMenu();
+			wx.onMenuShareAppMessage(shareData);
+			wx.onMenuShareTimeline(shareData);
+			wx.onMenuShareQQ(shareData);
+			wx.onMenuShareWeibo(shareData);
+		})
+	</script>
 </html>
