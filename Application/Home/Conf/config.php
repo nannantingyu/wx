@@ -2,12 +2,12 @@
 return array(
 	//'配置项'=>'配置值'
     'DB_TYPE'               =>  'mysql',     // 数据库类型
-    'DB_HOST'               =>  'rm-uf6myg31576im501eo.mysql.rds.aliyuncs.com', // 服务器地址
-    'DB_NAME'               =>  'yjshare',          // 数据库名
+    'DB_HOST'               =>  '127.0.0.1', // 服务器地址
+    'DB_NAME'               =>  'lims',          // 数据库名
     'DB_USER'               =>  'root',      // 用户名
-    'DB_PWD'                =>  'Wait12345',          // 密码
+    'DB_PWD'                =>  'abc123',          // 密码
     'DB_PORT'               =>  '3306',        // 端口
-    'DB_PREFIX'             =>  'crawl_',    // 数据库表前缀
+    'DB_PREFIX'             =>  '',    // 数据库表前缀
     'DB_PARAMS'          	=>  array(), // 数据库连接参数
     'DB_DEBUG'  			=>  TRUE, // 数据库调试模式 开启后可以记录SQL日志
     'DB_FIELDS_CACHE'       =>  true,        // 启用字段缓存
@@ -16,4 +16,6 @@ return array(
     'DB_RW_SEPARATE'        =>  false,       // 数据库读写是否分离 主从式有效
     'DB_MASTER_NUM'         =>  1, // 读写分离后 主服务器数量
     'DB_SLAVE_NO'           =>  '', // 指定从服务器序号
+    'APPID'					=> 'wx4ed1bb58b760662b',// 微信APPID
+    'SECRET'				=> '670f41a3eb4074247c6963f8a2afcebf',// 微信SECRET
 );

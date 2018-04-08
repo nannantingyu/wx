@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+    <script src="__PUBLIC__/giftcard/js/jquery-1.9.1.js"></script>
+    <script src="__PUBLIC__/giftcard/js/common.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/giftcard/css/todiestyle.css">
+    <title>健康管理</title>
+</head>
+<body>
+    <div class="main">
+        <div class="header mt20">
+            个性化健康管理
+        </div>
+        <div class="block">
+            <p>
+                本次基因检测结果显示您的心源性猝死风险度高于人群平均水平，但您的年龄处于高风险阶段，因此需关注疾病风险。
+            </p>
+
+            <p>
+                本次基因检测结果显示您的心源性猝死风险度高于人群平均水平，虽然您的年龄处于低风险阶段，也需要关注疾病风险。
+            </p>
+
+            <p>
+                本次基因检测结果显示您的心源性猝死风险度低于人群平均水平，但您的年龄处于高风险阶段，需适当关注疾病风险。
+            </p>
+
+            <p>
+                本次基因检测结果显示您的心源性猝死风险度低于人群平均水平，且您的年龄处于低风险阶段，建议平时保持健康的生活方式。
+            </p>
+
+            <if condition="$level == '低'">
+                <button class="wb100 bg-blue mt50" data-dialog="low-eating">饮食建议（遗传低风险）</button>
+                <button class="wb100 bg-blue" data-dialog="low-living">生活习惯建议（遗传低风险）</button>
+                <button class="wb100 bg-blue" data-dialog="low-shaicha">筛查建议（遗传低风险）</button>
+            <else/>
+                <button class="wb100 bg-blue mt50" data-dialog="high-eating">饮食建议（遗传高风险）</button>
+                <button class="wb100 bg-blue" data-dialog="high-living">生活习惯建议（遗传高风险）</button>
+                <button class="wb100 bg-blue" data-dialog="high-shaicha">筛查建议（遗传高风险）</button>
+            </if>
+        </div>
+    </div>
+
+    <if condition="$level == '低'">
+        <div class="dialog" id="dialog-low-eating">
+            <div class="dialog-header">
+                饮食建议（遗传低风险）
+            </div>
+            <div class="dialog-content">
+                <p>
+                    1.多摄入高纤维素以及新鲜的蔬菜和水果；
+                </p>
+                <p>
+                    2.保持营养均衡，包括蛋白质、糖、脂肪、维生素、微量元素和膳食纤维等必需的营养素，荤素搭配，食物品种多元化。多补充维生素C、多吃黄豆与其制品、补充β胡萝卜素及微量元素；
+                </p>
+                <p>
+                    3.饮食少油少盐、低糖低脂，勿过饱；
+                </p>
+                <p>
+                    4.忌生冷食物，短时间进食大量的生冷食物，易致心脏冠状动脉强烈痉挛或微循环栓塞，引发心肌急性缺血；
+                </p>
+                <p>
+                    5.多饮水，促进身体新陈代谢；
+                </p>
+                <p>
+                    6.避免吸烟、吸入二手烟，避免烟草中有害物质对身体的危害；
+                </p>
+                <p>
+                    7.减少饮酒的摄入量，每天的饮酒量小于1标准杯（美国1标准杯指含乙醇18毫升的酒精饮料）。
+                </p>
+            </div>
+            <div class="dialog-close">
+                <i></i>
+            </div>
+        </div>
+        <div class="dialog" id="dialog-low-living">
+            <div class="dialog-header">
+                生活习惯建议（遗传低风险）
+            </div>
+            <div class="dialog-content">
+                <p>
+                    1.	保持作息规律，保证充足睡眠；
+                </p>
+                <p>
+                    2.	保持平时心平气和，心胸开阔，避免过于紧张、焦虑、恐惧或情绪波动太大；
+                </p>
+                <p>
+                    3.	季节更替之际，往往是心血管病的高发期，注意添减衣服，保持适宜的温度；
+                </p>
+                <p>
+                    4.	适当进行体育锻炼，进行持之以恒的有氧运动，但尽量避免过早进行晨练；
+                </p>
+                <p>
+                    5.	保持排便通畅，避免久坐久卧；
+                </p>
+                <p>
+                    6.	保持合理体重；
+                </p>
+                <p>
+                    7.	清楚掌握家庭周边的医疗机构分布情况，以便及时获得急救支援。有冠心病等心血管疾病的人外出时应随身携带硝酸甘油、速效救心丸等，也应随身携带写有家庭住址、家庭成员联系电话、病史的急救卡
+                </p>
+            </div>
+            <div class="dialog-close">
+                <i></i>
+            </div>
+        </div>
+        <div class="dialog" id="dialog-low-shaicha">
+            <div class="dialog-header">
+                筛查建议（遗传低风险）
+            </div>
+            <div class="dialog-content">
+                <p>
+                    1.	建议每年进行一次全面的包括血糖、尿酸、血脂、心肌酶等检测在内的血液检测；
+                </p>
+                <p>
+                    2.	建议每年进行一次心电图检测或动态心电图监测，了解心脏技能情况；
+                </p>
+                <p>
+                    3.	建议每年进行一次对于心脏、脑血管、周围血管及肾脏的多普勒超声检查（B超），了解心脏器质情况、心事功能、血管功能及肾脏结构功能的情况。
+                    欧洲心脏病学会（ESC）发布的《室性心律失常管理与心脏性猝死预防指南》中指出高危因素[ ]，包括心衰患者、冠心病、心梗后、曾发生过SCD事件、有SCD家族史、扩张性心肌病伴心衰和遗传异常（肥厚性心肌病、长QT综合征、Brugada综合征）等因素。该指南提出预防突发心源性猝死的措施，如下：
+                </p>
+                <p>
+                    1）对发生过心脏骤停、有危及生命的室性心律失常，或有心源性猝死危险的患者进行戒烟干预；
+                </p>
+                <p>
+                    2）心源性猝死家族史的筛查；
+                </p>
+                3）对有显著心肌病和心源性猝死家族病史的患者进行无症状左心室功能不全的筛查（生化检查、心脏超声及心电图、胸片检查等）。
+                </p>
+            </div>
+            <div class="dialog-close">
+                <i></i>
+            </div>
+        </div>
+    <else />
+        <div class="dialog" id="dialog-high-eating">
+            <div class="dialog-header">
+                饮食建议（遗传高风险）
+            </div>
+            <div class="dialog-content">
+                <p>
+                    1.	多摄入高纤维素以及新鲜的蔬菜和水果；
+                </p>
+                <p>
+                    2.	保持营养均衡，包括蛋白质、糖、脂肪、维生素、微量元素和膳食纤维等必需的营养素，荤素搭配，食物品种多元化。多补充维生素C、多吃黄豆与其制品、补充β胡萝卜素及微量元素；
+                </p>
+                <p>
+                    3.	饮食少油少盐、低糖低脂，勿过饱；
+                </p>
+                <p>
+                    4.	忌生冷食物，短时间进食大量的生冷食物，易致心脏冠状动脉强烈痉挛或微循环栓塞，引发心肌急性缺血；
+                </p>
+                <p>
+                    5.	多饮水，促进身体新陈代谢；
+                </p>
+                <p>
+                    6.	戒烟限酒，严格限制酒精摄入；
+                </p>
+            </div>
+            <div class="dialog-close">
+                <i></i>
+            </div>
+        </div>
+        <div class="dialog" id="dialog-high-living">
+            <div class="dialog-header">
+                生活习惯建议（遗传高风险）
+            </div>
+            <div class="dialog-content">
+                <p>
+                    1.	保持作息规律，保证充足睡眠；
+                </p>
+                <p>
+                    2.	保持平时心平气和，心胸开阔，避免过于紧张、焦虑、恐惧或情绪波动太大；
+                </p>
+                <p>
+                    3.	季节更替之际，往往是心血管病的高发期，注意添减衣服，保持适宜的温度；
+                </p>
+                <p>
+                    4.	适当进行体育锻炼，进行持之以恒的有氧运动，但尽量避免过早进行晨练；
+                </p>
+                <p>
+                    5.	保持排便通畅，避免久坐久卧；
+                </p>
+                <p>
+                    6.	保持合理体重；
+                </p>
+                <p>
+                    7.	清楚掌握家庭周边的医疗机构分布情况，以便及时获得急救支援。有冠心病等心血管疾病的人外出时应随身携带硝酸甘油、速效救心丸等，也应随身携带写有家庭住址、家庭成员联系电话、病史的急救卡
+                </p>
+            </div>
+            <div class="dialog-close">
+                <i></i>
+            </div>
+        </div>
+        <div class="dialog" id="dialog-high-shaicha">
+            <div class="dialog-header">
+                筛查建议（遗传高风险）
+            </div>
+            <div class="dialog-content">
+                <p>
+                    1.	建议每半年至1年进行一次全面的血生化检查，包括血糖、尿酸、血脂、心肌酶等指标；
+                </p>
+                <p>
+                    2.	建议每半年至1年进行一次心电图检测、超声心动图或动态心电图监测，了解心脏功能情况；
+                </p>
+                <p>
+                    3.	建议每半年至1年进行一次对于心脏、脑血管、周围血管及肾脏的多普勒超声检查（B超），了解心脏器质情况、心室功能、血管功能及肾脏功能的情况。
+                </p>
+                <p>
+                    4. 根据欧洲心脏病学会（ESC）发布的《室性心律失常管理与心脏性猝死预防指南》，指出高危因素[ ]，包括心衰患者、冠心病、心梗后、曾发生过SCD事件、有SCD家族史、扩张性心肌病伴心衰和遗传异常（肥厚性心肌病、长QT综合征、Brugada综合征）等因素，并对于有上述高危因素的人群，提出预防突发心源性猝死的措施，如下：
+                </p>
+                <p>
+                    1）对发生过心脏骤停、有危及生命的室性心律失常，或有心源性猝死危险的患者进行戒烟干预；
+                </p>
+                <p>
+                    2）心源性猝死家族史的筛查；
+                </p>
+                <p>
+                    3）对有显著心肌病和心源性猝死家族病史的患者进行无症状左心室功能不全的筛查（生化检查、心脏超声及心电图、胸片检查等）。
+                </p>
+            </div>
+            <div class="dialog-close">
+                <i></i>
+            </div>
+        </div>
+    </if>
+</body>
+</html>
