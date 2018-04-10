@@ -83,8 +83,8 @@
                     var shareData = {
                         title: '我的优馨安无创产前基因检测报告',
                         desc: '经优馨安无创产前基因检测得知，宝宝是唐氏综合征低风险，我希望能跟你共同分享这份喜悦。',
-                        link: '/Public/share/'+data['url'],
-                        imgUrl: '/Public/share/'+data['url']
+                        link: '/Public/share/{$imgname}',
+                        imgUrl: '/Public/share/{$imgname}'
                     };
                     wx.showOptionMenu();
                     wx.onMenuShareAppMessage(shareData);

@@ -45,6 +45,7 @@ class GiftbgController extends Controller {
         $sampleno = I("get.sampleno");
         $ret = $this->getgene($sampleno);
         $this->assign("ret", $ret);
+        $this->assign("imgname", $this->shengcheng($sampleno));
         $this->display();
     }
 
@@ -84,8 +85,7 @@ class GiftbgController extends Controller {
         $this->display();
     }
 
-    public function shengcheng(){
-        $sampleno = I("get.sampleno");
+    public function shengcheng($sampleno){
         session("openid", "oeKeMwam_whQsmmgEnpsNxWfszbA");
         if($sampleno) {
             $pos = M('elephant_zhu')
@@ -137,13 +137,14 @@ class GiftbgController extends Controller {
             $pit = $url.$imgname;
             //5、输出图片
             imagejpeg($img,$pit);
-            if(file_exists($pit)){
-//                $this->redirect("giftbg/fenxiang","url=".$imgname);
-                $this->ajaxReturn(array("url"=>$imgname, "state"=>1));
-            }
-            else {
-                $this->ajaxReturn(array("url"=>$imgname, "state"=>-1));
-            }
+            return $imgname;
+//            if(file_exists($pit)){
+////                $this->redirect("giftbg/fenxiang","url=".$imgname);
+//                $this->ajaxReturn(array("url"=>$imgname, "state"=>1));
+//            }
+//            else {
+//                $this->ajaxReturn(array("url"=>$imgname, "state"=>-1));
+//            }
         }
     }
 
