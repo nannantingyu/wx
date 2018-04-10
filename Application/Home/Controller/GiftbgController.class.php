@@ -86,6 +86,7 @@ class GiftbgController extends Controller {
 
     public function shengcheng(){
         $sampleno = I("post.sampleno");
+        session("openid", "oeKeMwam_whQsmmgEnpsNxWfszbA");
         if($sampleno) {
             $pos = M('elephant_zhu')
                 ->where(array('sampleNo'=>$sampleno))
