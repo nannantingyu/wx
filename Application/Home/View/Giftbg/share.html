@@ -11,16 +11,16 @@
 <body class="bgbody">
     <div class="main-share">
         <div class="block-share">
-            <p>某某先生 基因检测提示</p>
-            <p>我的心源性猝死 <span class="blue">患病风险低</span></p>
+            <p>{$giftbg['tjname']}{$giftbg['tjsex']=='男'?'先生':'女士'} 基因检测提示</p>
+            <p>我的心源性猝死 <span class="{$color}">患病风险{$giftbg['level']}</span></p>
             <p>是平均人群的</p>
-            <div class="bei">
-                <span>0.53 <em class="center">倍</em></span>
+            <div class="bei {$color}">
+                <span>{$giftbg['risk']} <em class="center bg-{$color}">倍</em></span>
             </div>
             <p>
                 <img src="__PUBLIC__/giftcard/image/shareback.png" alt="">
             </p>
-            <p class="info-text">患病风险低于一般人群，但仍需关注自身健康， 保持健康合理的生活方式呦。 </p>
+            <p class="info-text">{$info}</p>
             <div class="flex jiyin">
                 <ul>
                     <li>基因 KLF15</li>

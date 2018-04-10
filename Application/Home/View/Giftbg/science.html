@@ -68,8 +68,32 @@
         </div>
 
         <div class="sbm-share">
-            <a href="__CONTROLLER__/share"><button class="bg-pink">点击分享朋友圈</button></a>
+            <a href="javascript:alert('点击头部分享到朋友圈吧');"><button class="bg-pink">点击分享朋友圈</button></a>
         </div>
     </div>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        $.ajax({
+            url: "/Giftbg/science",
+            data: {},
+            type: "post",
+            dataType: "json",
+            success: function(data) {
+                wx.ready(function () {
+                    var shareData = {
+                        title: '我的优馨安无创产前基因检测报告',
+                        desc: '经优馨安无创产前基因检测得知，宝宝是唐氏综合征低风险，我希望能跟你共同分享这份喜悦。',
+                        link: '/bgcx/public/share/{$img}',
+                        imgUrl: '/bgcx/public/share/{$img}'
+                    };
+                    wx.showOptionMenu();
+                    wx.onMenuShareAppMessage(shareData);
+                    wx.onMenuShareTimeline(shareData);
+                    wx.onMenuShareQQ(shareData);
+                    wx.onMenuShareWeibo(shareData);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
