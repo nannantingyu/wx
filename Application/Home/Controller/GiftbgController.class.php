@@ -46,6 +46,11 @@ class GiftbgController extends Controller {
         $ret = $this->getgene($sampleno);
         $this->assign("ret", $ret);
         $this->assign("imgname", $this->shengcheng($sampleno));
+        vendor( 'jssdk.jssdk' );
+        $jssdk = new \jssdk(C('APPID'), C('SECRET'));
+        $data = $jssdk->getSignPackage();
+        $this->assign('data',$data);
+
         $this->display();
     }
 

@@ -73,6 +73,23 @@
     </div>
     <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script>
+        wx.config({
+            appId: '{$data["appId"]}',
+            timestamp: '{$data["timestamp"]}',
+            nonceStr: '{$data["nonceStr"]}',
+            signature: '{$data["signature"]}',
+            jsApiList: [
+                'onMenuShareAppMessage',
+                'onMenuShareTimeline',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+            ]
+        });
+
+        wx.ready(function () {
+            wx.hideOptionMenu();
+        });
+
         $.ajax({
             url: "/Giftbg/shengcheng",
             data: {"sampleno": "ME18SD6B51"},
