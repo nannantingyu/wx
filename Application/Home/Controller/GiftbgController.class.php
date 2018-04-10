@@ -104,6 +104,7 @@ class GiftbgController extends Controller {
                 $info = "患病风险高于一般人群，但仍需关注自身健康，\n保持健康合理的生活方式呦。";
             }
 
+            define("PUBLICS", "./Public");
             //$text = iconv("gb2312","utf-8",$text); //防止中文乱码
             $size = 26; //文字大小
             $font = PUBLICS."/ttf/yahei.TTF"; //字体user-img
