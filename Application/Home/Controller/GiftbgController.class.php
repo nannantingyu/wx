@@ -85,7 +85,7 @@ class GiftbgController extends Controller {
     }
 
     public function shengcheng(){
-        $sampleno = I("post.sampleno");
+        $sampleno = I("get.sampleno");
         session("openid", "oeKeMwam_whQsmmgEnpsNxWfszbA");
         if($sampleno) {
             $pos = M('elephant_zhu')
